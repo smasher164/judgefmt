@@ -17,22 +17,18 @@ fn parse_level(
     level: i32,
     args: &mut Peekable<slice::Iter<&str>>,
 ) -> Result<()> {
-    let mut atleast_one = false;
     loop {
         match args.peek() {
             Some(s) => {
                 if s.starts_with("-l") {
-                    ensure!(atleast_one, "missing args");
                     return Ok(());
                 }
-                atleast_one = true;
                 levels
                     .entry(level)
                     .or_insert(Vec::new())
                     .push(args.next().unwrap().to_string());
             }
             None => {
-                ensure!(atleast_one, "missing args");
                 return Ok(());
             }
         }
@@ -48,6 +44,9 @@ fn parse_args(
             Some(s) => {
                 ensure!(s.starts_with("-l"), "level doesn't start with -l");
                 let level: i32 = args.next().unwrap().trim_start_matches("-l").parse()?;
+                levels
+                    .entry(level)
+                    .or_insert(Vec::new());
                 parse_level(levels, level, args)?;
             }
             None => {
@@ -82,7 +81,9 @@ fn main() {
     let mut min_total = 0;
     for vc in levels.values() {
         let length = vc.iter().fold(0, |sum, s| sum + s.chars().count());
-        min_total = min_total.max(length + 4 * (vc.len() - 1));
+        if vc.len() != 0 {
+            min_total = min_total.max(length + 4 * (vc.len() - 1));
+        }
         lev_lengths.push(length);
     }
     let line = "-".repeat(min_total + 2);
@@ -103,6 +104,11 @@ fn main() {
             print!("{name}:");
         } else {
             print!("{padding}");
+        }
+        if vc.len() == 0 {
+            println!();
+            row += 1;
+            continue;
         }
         let spaces = min_total - lev_lengths[*level as usize];
         let quo = spaces / if vc.len() == 1 { 2 } else { vc.len() - 1 };
