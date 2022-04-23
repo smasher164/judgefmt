@@ -8,7 +8,7 @@ use std::{
 };
 
 fn usage() -> ! {
-    eprintln!("usage: judgefmt --name name -l0 p1 ... pk ... -ln p1 ... pk\n");
+    eprintln!("usage: judgefmt --name name -l0 p1 ... pk ... -ln p1 ... pk");
     process::exit(2);
 }
 
