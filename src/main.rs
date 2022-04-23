@@ -85,7 +85,7 @@ fn main() {
         min_total = min_total.max(length + 4 * (vc.len() - 1));
         lev_lengths.push(length);
     }
-    let line = "-".repeat(min_total + 2);
+    let line = "─".repeat(min_total + 2);
     let padding = " ".repeat(name.len() + 1);
     let middle_row = (levels.len() + (levels.len() - 1)) / 2;
     let mut row = 0;
