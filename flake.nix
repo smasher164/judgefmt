@@ -19,6 +19,11 @@
         };
       in
       {
+        packages.judgefmt = pkgs.rustPlatform.buildRustPackage {
+          name = "judgefmt";
+          src = ./.;
+          cargoLock.lockFile = ./Cargo.lock;
+        };
         devShell = pkgs.mkShell {
           buildInputs = [
             pkgs.cargo
