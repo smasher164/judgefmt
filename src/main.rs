@@ -81,8 +81,8 @@ fn main() {
     let mut lev_lengths = Vec::new();
     let mut min_total = 0;
     for vc in levels.values() {
-        let length = vc.iter().fold(0, |sum, s| sum + s.len());
-        min_total = min_total.max(length + (vc.len() - 1));
+        let length = vc.iter().fold(0, |sum, s| sum + s.chars().count());
+        min_total = min_total.max(length + 4 * (vc.len() - 1));
         lev_lengths.push(length);
     }
     let line = "-".repeat(min_total + 2);
@@ -90,30 +90,37 @@ fn main() {
     let middle_row = (levels.len() + (levels.len() - 1)) / 2;
     let mut row = 0;
     for (level, vc) in &levels {
-        let spaces = min_total - lev_lengths[*level as usize];
-        let quo = spaces / (vc.len() - 1);
-        let rem = spaces % (vc.len() - 1);
-        let seg = " ".repeat(quo);
         if *level != 0 {
             if row == middle_row {
-                println!("{name}:{line}");
+                print!("{name}:");
             } else {
-                println!("{padding}{line}");
+                print!("{padding}");
             }
+            println!("{line}");
             row += 1;
         }
-        for (i, s) in vc.iter().enumerate() {
-            if i == 0 {
-                if row == middle_row {
-                    print!("{name}: {}{}{}", s, seg, " ".repeat(rem));
+        if row == middle_row {
+            print!("{name}:");
+        } else {
+            print!("{padding}");
+        }
+        let spaces = min_total - lev_lengths[*level as usize];
+        let quo = spaces / if vc.len() == 1 { 2 } else { vc.len() - 1 };
+        let rem = spaces % if vc.len() == 1 { 2 } else { vc.len() - 1 };
+        let seg = " ".repeat(quo);
+        if vc.len() == 1 {
+            println!(" {}{}{}{} ", seg, " ".repeat(rem), vc[0], seg);
+            row += 1;
+        } else {
+            for (i, s) in vc.iter().enumerate() {
+                if i == 0 {
+                    print!(" {}{}{}", s, seg, " ".repeat(rem));
+                } else if i != vc.len() - 1 {
+                    print!("{}{}", s, seg);
                 } else {
-                    print!("{padding} {}{}{}", s, seg, " ".repeat(rem));
+                    println!("{} ", s);
+                    row += 1;
                 }
-            } else if i != vc.len() - 1 {
-                print!("{}{}", s, seg);
-            } else {
-                println!("{} ", s);
-                row += 1;
             }
         }
     }
