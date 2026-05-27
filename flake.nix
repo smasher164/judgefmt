@@ -1,7 +1,7 @@
 {
   description = "generate ASCII rules of inference";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -10,6 +10,7 @@
       "aarch64-linux"
       "i686-linux"
       "x86_64-linux"
+      "aarch64-darwin"
     ]; in
     flake-utils.lib.eachSystem supportedSystems (system:
       let
