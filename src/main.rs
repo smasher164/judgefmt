@@ -86,7 +86,7 @@ fn main() {
         }
         lev_lengths.push(length);
     }
-    let line = "-".repeat(min_total + 2);
+    let line = "─".repeat(min_total + 2);
     let padding = " ".repeat(name.len() + 1);
     let middle_row = (levels.len() + (levels.len() - 1)) / 2;
     let mut row = 0;
